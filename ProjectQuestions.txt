@@ -1,0 +1,6 @@
+1)
+Put the Player class in player.py.
+Make the player able to carry multiple items.
+
+Question: What data types will these items be?
+Answer: They should be Item type. You will have to create your own item class

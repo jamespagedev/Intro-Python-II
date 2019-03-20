@@ -1,11 +1,27 @@
-from room import Room
-import textwrap
+# ***********************************************************************
+# ******************************* imports *******************************
+# ***********************************************************************
 import os
+from room import Room
+from player import Player
+
+# ***********************************************************************
+# ******************************* globals *******************************
+# ***********************************************************************
 
 max_chars_per_line = 50
 game_title = "Intro-Python-II"
+possible_moves = ["n", "s", "e", "w"]
+move_north_index = 0
+move_south_index = 1
+move_east_index = 2
+move_west_index = 3
+room_keys = ['outside', 'foyer', 'overlook', 'narrow', 'treasure']
 
-# Methods
+# ***********************************************************************
+# ******************************* methods *******************************
+# ***********************************************************************
+# ---------------------------- print methods ----------------------------
 
 
 def print_game_title():
@@ -17,10 +33,17 @@ def print_game_title():
     print(str_stars_line)
 
 
-def console_print(str, max_chars_per_line):
-    c_str = textwrap.wrap(str, max_chars_per_line)
-    for line in c_str:
-        print(line)
+def print_player_items(player):
+    if not player.get_items():
+        print(f"{player} Items: None")
+    else:
+        print(f"{player} Items:")
+        print("\tPrint list of items here")
+
+
+def print_player_info(player):
+    print(f"Character Name: {player}")
+    print_player_items(player)
 
 
 def print_commands_title():
@@ -28,63 +51,72 @@ def print_commands_title():
 
 
 def print_command_quit():
-    print("\tQuit:\t\"q\"")
+    print("\t[q] = quits game")
 
 
 def print_commands_move(moves):
     str_move_cmds = ""
     for move in moves:
-        if move == "n":
-            str_move_cmds += "\"n\" = move north    "
-        elif move == "s":
-            str_move_cmds += "\"s\" = move south    "
-        elif move == "w":
-            str_move_cmds += "\"w\" = move west    "
-        elif move == "e":
-            str_move_cmds += "\"e\" = move east    "
-    print("\t" + "Moves:\t" + str_move_cmds)
+        if move == possible_moves[move_north_index]:
+            str_move_cmds += f"[{possible_moves[move_north_index]}] = move north    "
+        elif move == possible_moves[move_south_index]:
+            str_move_cmds += f"[{possible_moves[move_south_index]}] = move south    "
+        elif move == possible_moves[move_east_index]:
+            str_move_cmds += f"[{possible_moves[move_east_index]}] = move east    "
+        elif move == possible_moves[move_west_index]:
+            str_move_cmds += f"[{possible_moves[move_west_index]}] = move west    "
+    print("\t" + str_move_cmds)
 
-# Declare all the rooms
+# ***********************************************************************
+# ************************ Declare all the rooms ************************
+# ***********************************************************************
 
 
-room = {
-    'outside':  Room("Outside Cave Entrance", "North of you, the cave mount beckons"),
+dict_rooms = {
+    room_keys[0]:  Room("Outside Cave Entrance", "North of you, the cave mount beckons"),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
+    room_keys[1]:    Room("Foyer", """Dim light filters in from the south. Dusty
 passages run north and east."""),
 
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
+    room_keys[2]: Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
 the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
+    room_keys[3]:   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air."""),
 
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
+    room_keys[4]: Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
 
-# Link rooms together
+# ***********************************************************************
+# ************************* Link rooms together *************************
+# ***********************************************************************
 
-room['outside'].n_to = room['foyer']
-room['outside'].set_moves(["n"])
-room['foyer'].n_to = room['overlook']
-room['foyer'].s_to = room['outside']
-room['foyer'].e_to = room['narrow']
-room['foyer'].set_moves(["n", "s", "e"])
-room['overlook'].s_to = room['foyer']
-room['overlook'].set_moves(["s"])
-room['narrow'].n_to = room['treasure']
-room['narrow'].w_to = room['foyer']
-room['narrow'].set_moves(["n", "w"])
-room['treasure'].s_to = room['narrow']
-room['treasure'].set_moves(["s"])
+dict_rooms[room_keys[0]].n_to = dict_rooms[room_keys[1]]
+dict_rooms[room_keys[0]].set_moves([possible_moves[move_north_index]])
+dict_rooms[room_keys[1]].n_to = dict_rooms[room_keys[2]]
+dict_rooms[room_keys[1]].s_to = dict_rooms[room_keys[0]]
+dict_rooms[room_keys[1]].e_to = dict_rooms[room_keys[3]]
+dict_rooms[room_keys[1]].set_moves([possible_moves[move_north_index],
+                                    possible_moves[move_south_index],
+                                    possible_moves[move_east_index]
+                                    ])
+dict_rooms[room_keys[2]].s_to = dict_rooms[room_keys[1]]
+dict_rooms[room_keys[2]].set_moves([possible_moves[move_south_index]])
+dict_rooms[room_keys[3]].n_to = dict_rooms[room_keys[4]]
+dict_rooms[room_keys[3]].w_to = dict_rooms[room_keys[1]]
+dict_rooms[room_keys[3]].set_moves([possible_moves[move_north_index],
+                                    possible_moves[move_west_index]
+                                    ])
+dict_rooms[room_keys[4]].s_to = dict_rooms[room_keys[3]]
+dict_rooms[room_keys[4]].set_moves([possible_moves[move_south_index]])
 
-#
-# Main
-#
+# ***********************************************************************
+# ********************************* main ********************************
+# ***********************************************************************
 
 # Make a new player object that is currently in the 'outside' room.
 
@@ -98,20 +130,37 @@ room['treasure'].set_moves(["s"])
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
-current_room = room['outside']
 
-
+# game setup
 os.system('cls' if os.name == 'nt' else 'clear')
 print_game_title()
+player_name = input("Enter character name: ")
+player = Player(player_name)
+current_room = dict_rooms[room_keys[0]]
+
+# play game
 while True:
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_game_title()
+    print_player_info(player)
+    print()
     print(current_room)
     print()
     print_commands_title()
     print_command_quit()
     print_commands_move(current_room.get_moves())
     print()
-    cmd = input("Enter command:")
+    cmd = input("Enter command: ").lower()
+    # quits game
     if cmd == "q":
         break
-
+    # change room - valid move direction entered by user
+    elif cmd in current_room.get_moves():
+        current_room = current_room.next_room(cmd, possible_moves)
+    # invalid move direction entered by user
+    elif cmd in possible_moves:
+        input("There is no room in that direction (press any key to continue...)")
+    # input entered by user not recognized
+    else:
+        input("invalid command! (press any key to continue...)")
 os.system('cls' if os.name == 'nt' else 'clear')

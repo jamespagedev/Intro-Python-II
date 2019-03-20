@@ -1,3 +1,6 @@
+from room import Room
+
+
 class Parser:
-    def move(self):
+    def __init__(self):
         return None

@@ -7,5 +7,11 @@ class Player:
         self.str_name = name
         self.list_items_objects = items
 
-    def additem(self, item):
+    def __str__(self):
+        return f"{self.str_name}"
+
+    def add_item(self, item):
         self.list_items_objects.append(item)
+
+    def get_items(self):
+        return self.list_items_objects

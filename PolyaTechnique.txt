@@ -51,11 +51,11 @@
 
 2. Devise a Plan
     Wednesday:
-        build start game (main loop)
-        Build rooms
-        Build player
-        Allow player to move between rooms
-        build end game
+        * build start game (main loop)
+        * Build rooms
+        * Build player
+        * Allow player to move between rooms
+        * build end game
     Thursday:
         Build Item Objects
         Build inventory object

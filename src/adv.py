@@ -11,6 +11,7 @@ from player import Player
 
 max_chars_per_line = 50
 game_title = "Intro-Python-II"
+# order of possible_moves is coupled with logic in other file(s)
 possible_moves = ["n", "s", "e", "w"]
 move_north_index = 0
 move_south_index = 1
@@ -21,6 +22,17 @@ room_keys = ['outside', 'foyer', 'overlook', 'narrow', 'treasure']
 # ***********************************************************************
 # ******************************* methods *******************************
 # ***********************************************************************
+
+
+def game_completed():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_game_title()
+    print(
+        f"Congradulations! You have found the {room_keys[len(room_keys) - 1]} room!!!")
+    print()
+    answer = input("Would you like to keep playing ([y]es, [n]o): ").lower()
+    return answer == "n"
+
 # ---------------------------- print methods ----------------------------
 
 
@@ -141,6 +153,7 @@ current_room = dict_rooms[room_keys[0]]
 # play game
 while True:
     os.system('cls' if os.name == 'nt' else 'clear')
+
     print_game_title()
     print_player_info(player)
     print()
@@ -163,4 +176,8 @@ while True:
     # input entered by user not recognized
     else:
         input("invalid command! (press any key to continue...)")
+    # user beats game if in the final room
+    if current_room.get_name() == dict_rooms[room_keys[len(room_keys) - 1]].get_name():
+        if game_completed():
+            break
 os.system('cls' if os.name == 'nt' else 'clear')

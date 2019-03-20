@@ -12,6 +12,9 @@ class Room:
         self.e_to = None
         self.w_to = None
 
+    def get_name(self):
+        return self.str_name
+
     def set_moves(self, moves):
         self.list_moves = moves
 

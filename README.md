@@ -1,6 +1,6 @@
 # Intro to Python II
 
-Up to this point, you've gotten your feet wet by working on a bunch of small Python programs. In this module, we're going to continue to solidify your Python chops by implementing a full-featured project according to a provided specification. 
+Up to this point, you've gotten your feet wet by working on a bunch of small Python programs. In this module, we're going to continue to solidify your Python chops by implementing a full-featured project according to a provided specification.
 
 ## Goals
 
@@ -19,30 +19,30 @@ Up to this point, you've gotten your feet wet by working on a bunch of small Pyt
 
 ## Specification
 
-The `/src` directory contains the files `adv.py`, which is where the main logic for the entire game should live, `room.py`, which will contain the definition of the Room class, and `player.py`, which will contain the definition of the Player class. 
+The `/src` directory contains the files `adv.py`, which is where the main logic for the entire game should live, `room.py`, which will contain the definition of the Room class, and `player.py`, which will contain the definition of the Player class.
 
-* Put the Room class in `room.py` based on what you see in `adv.py`.
+[X] Put the Room class in `room.py` based on what you see in `adv.py`.
 
-* Put the Player class in `player.py`.
+[X] Put the Player class in `player.py`.
 
-* Create a file called `item.py` and add an `Item` class in there.
+[X] Create a file called `item.py` and add an `Item` class in there.
 
   * This will be the _base class_ for specialized item types to be declared
     later.
 
-  * The item should have `name` and `description` attributes.
+  [X] The item should have `name` and `description` attributes.
 
-     * Hint: the name should be one word for ease in parsing later.
+    [X] Hint: the name should be one word for ease in parsing later.
 
-* Add the ability to add items to rooms.
+[X] Add the ability to add items to rooms.
 
-  * The `Room` class should be extended with a `list` that holds the `Item`s
+  [X] The `Room` class should be extended with a `list` that holds the `Item`s
     that are currently in that room.
 
   * Add functionality to the main loop that prints out all the items that are
     visible to the player when they are in that room.
 
-* Add capability to add `Item`s to the player's inventory. The inventory can
+[X] Add capability to add `Item`s to the player's inventory. The inventory can
   also be a `list` of items "in" the player, similar to how `Item`s can be in a
   `Room`.
 
@@ -74,7 +74,7 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 
      * If it's not there, print an error message telling the user so.
 
-     * Add an `on_take` method to `Item`. 
+     * Add an `on_take` method to `Item`.
 
         * Call this method when the `Item` is picked up by the player.
 

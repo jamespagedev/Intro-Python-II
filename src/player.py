@@ -3,5 +3,9 @@
 
 
 class Player:
-    def __init__(self, items):
-        self.items = items
+    def __init__(self, name, items=[]):
+        self.str_name = name
+        self.list_items_objects = items
+
+    def additem(self, item):
+        self.list_items_objects.append(item)

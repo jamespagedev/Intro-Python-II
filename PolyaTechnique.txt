@@ -1,0 +1,64 @@
+1. Understanding the problem
+    Ask Questions
+        What happens when you first start the game?
+            Player is standing in starting room asking for player input on which direction to go (with only optional directions)
+        What are the rules/flow of the game?
+            Player can move from room to room.
+            The rooms are pre-designed with a direction connected (north, south, east, and west)
+        How many players will there be?
+            1
+        How many rooms will there be?
+            5
+        How will the players move in the rooms?
+            They won't, they will either be in or out of the room.
+        How will the players move between rooms?
+            Using the directional input of [n]orth, [s]outh, [e]ast, and [w]est
+            use repl - read, eval, print, loop
+            player will give input by giving the char representing the direction to go in
+        What will be the size of the rooms? Will the size be a range?
+            no size, or range, they are atomic
+        Will the rooms have obsticles/walls?
+            no
+        Do I have to worry about any existing universe outside of the rooms?
+            no, however if the player selects a direction not optional, give error "you cannot move in that direction"
+        Is there a limit of items a player and rooms can carry?
+            rooms can have 1-3 times
+            player can carry up to 5 items
+        How will the players execute commands of get and drop? What triggers these commands to appear?
+            ## use two word verb and object (take item)
+            show list of available items from room upon entry
+            loop through items and give player option to get or drop items
+            if player inventory is full, ask player if they would like to drop item in inventory
+                if player says yes
+                    show inventory, and exit once player selects and drops/uses item
+                else
+                    drop item and move into next item
+        Will there be monsters in the mvp, if so, how should I handle this?
+            no
+        How will the player access the inventory?
+            by inputting i at any point in the game or
+                selecting yes when the game asks for it
+        What will the inventory look like?
+            a simple list of items (1. itemName, 2. itemName, 3. itemName)
+            followed by a message: "please input number to select item or input e to [e]xit:"
+                if user inputs number of item:
+                    display message saying "[u]se, [d]rop, [b]ack, or [e]xit:"
+                        Hint: both use/drop will make the item disappear, no functionality written yet for using the item.
+                        [b]ack - takes you to the previous item select menu
+                        [e]xit - exits inventory
+        Is there a menu to execute commands, what does it look like, how and when can the player access it?
+            yes - it will have a basic string instruction for every console input.
+
+2. Devise a Plan
+    Wednesday:
+        build start game (main loop)
+        Build rooms
+        Build player
+        Allow player to move between rooms
+        build end game
+    Thursday:
+        Build Item Objects
+        Build inventory object
+        Add items to rooms
+        Add ability for player to carry items in inventory
+        Add ability for get/drop items (for rooms and players)

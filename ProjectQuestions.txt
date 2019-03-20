@@ -4,3 +4,34 @@ Make the player able to carry multiple items.
 
 Question: What data types will these items be?
 Answer: They should be Item type. You will have to create your own item class
+
+2)
+Add functionality to the main loop that prints out all the items that are
+    visible to the player when they are in that room.
+
+Question: Where and What is the "main loop"?
+Answer: it will be in the adv.py, and just a while loop taking in user inputs
+
+3)
+Add a new type of sentence the parser can understand: two words.
+
+Question: I'm not sure what you mean by adding a "new type of sentence" to the parser?
+Answer: example move("north") vs item("drop item")
+
+4)
+Add two-word commands to the parser
+
+Question: I'm not sure what you mean by add a two-word commands
+    What is the expected I/O?
+    Should I add this as a method, variable to the parser class?
+
+
+5)
+Add the `get` and `drop` commands to the parser
+
+Question: by commands do you mean methods?
+    what exactly is supposed to happen when these methods get called?
+
+6)
+Question: I'm not understanding how the workflow will be for this project,
+    so should I start creating a flow chart?

@@ -1,3 +1,3 @@
 class Parser:
-    def pHelloWorld(self):
-        print('Hello World')
+    def move(self):
+        return None

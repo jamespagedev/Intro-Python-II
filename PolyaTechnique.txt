@@ -58,7 +58,6 @@
         * build end game
     Thursday:
         Build Item Objects
-        Build inventory object
-        Add items to rooms
-        Add ability for player to carry items in inventory
-        Add ability for get/drop items (for rooms and players)
+        Add items to rooms upon room creation (random items added between 1-3)
+        Add ability for player to carry items between rooms
+        Add ability for player to get/drop items in rooms

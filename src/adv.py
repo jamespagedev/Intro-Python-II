@@ -32,14 +32,14 @@ def get_items_from_room(player_selected_itemnames, room, player):
     for player_selected_itemname in player_selected_itemnames:
         if not room.is_item_in_room(player_selected_itemname):
             print(f"Item not found: {player_selected_itemname}")
-            return input(f"(Press any key to continue...)")
+            return input(f"(Press enter to continue...)")
 
     # Next remove the item(s) from the room and add to player item(s)
     player.add_items(room.get_items(player_selected_itemnames))
 
     # Finally, print the items (on player screen) removed from the room and stored with player
     print(f"{player} stores items: {player_selected_itemnames}")
-    return input(f"(Press any key to continue...)")
+    return input(f"(Press enter to continue...)")
 
 
 def drop_items_in_room(player_selected_itemnames, player, room):
@@ -50,14 +50,14 @@ def drop_items_in_room(player_selected_itemnames, player, room):
         if player_selected_itemname not in player.get_item_names():
             print(
                 f"Item not found in player inventory: {player_selected_itemname}")
-            return input(f"(Press any key to continue...)")
+            return input(f"(Press enter to continue...)")
 
     # Next remove the items(s) from player and add item(s) to room
     room.add_items(player.drop_items(player_selected_itemnames))
 
     # Finally, print the items (on player screen) that were dropped in the room
     print(f"{player} dropped items: {player_selected_itemnames}")
-    return input(f"(press any key to continue...)")
+    return input(f"(press enter to continue...)")
 # ---------------------------- print methods ----------------------------
 
 
@@ -97,6 +97,13 @@ def print_game_title():
     print(str_stars_line)
     print(str_title_stars + " " + game_title + " " + str_title_stars)
     print(str_stars_line)
+
+
+def display_inventory(player):
+    clear_screen()
+    print_player_items(player)
+    print()
+    input("Press enter to go exit inventory...")
 
 
 def print_player_items(player):
@@ -167,10 +174,10 @@ def print_commands_move(moves):
 def print_invalid_cmd(user_cmd):
     # invalid move direction entered by user
     if user_cmd in possible_moves:
-        input("There is no room in that direction (press any key to continue...)")
+        input("There is no room in that direction (press enter to continue...)")
     # input entered by user not recognized
     else:
-        input("invalid command! (press any key to continue...)")
+        input("invalid command! (press enter to continue...)")
 
 
 # ***********************************************************************
@@ -259,6 +266,9 @@ while True:
     # change room - valid move direction entered by user
     elif cmd[0] in current_room.get_moves():
         current_room = current_room.next_room(cmd[0], possible_moves)
+    # show inventory
+    elif cmd[0] == "i":
+        display_inventory(player)
     # get item(s)
     elif "get" in cmd[0] or "take" in cmd[0]:
         get_items_from_room(cmd[1:], current_room, player)

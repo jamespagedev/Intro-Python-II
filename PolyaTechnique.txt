@@ -62,3 +62,6 @@
         * Add command for player to pickup items from rooms and store items
         * Add ability for player to carry items between rooms
         * Add ability for player to drop items in rooms
+        * add command i shows inventory
+        update commands
+        add a few rooms

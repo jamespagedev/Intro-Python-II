@@ -4,6 +4,7 @@
 import os
 from room import Room
 from player import Player
+from item import Item
 
 # ***********************************************************************
 # ******************************* globals *******************************
@@ -24,17 +25,31 @@ room_keys = ['outside', 'foyer', 'overlook', 'narrow', 'treasure']
 # ***********************************************************************
 
 
-def get_items_from_room(items, room, player):
+def get_items_from_room(player_selected_itemnames, room, player):
+    clear_screen()
     # First check if item(s) are in the room...
-        # if not, return a message saying item "itemName" not found in current location
+    # if not, return a message saying item "itemName" not found in current location
+    for player_selected_itemname in player_selected_itemnames:
+        if not room.is_item_in_room(player_selected_itemname):
+            print(f"Item not found: {player_selected_itemname}")
+            return input(f"(Press any key to continue...)")
 
-    print("items =", items)
+    # Next remove the item(s) from the room and add to player item(s)
+    player.add_items(room.get_items(player_selected_itemnames))
+
+    # Finally, print the items (on player screen) removed from the room and stored with player
+    print(f"{player} stores items: {player.get_item_names()}")
+    return input(f"(Press any key to continue...)")
 
 # ---------------------------- print methods ----------------------------
 
 
-def game_completed():
+def clear_screen():
     os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def game_completed():
+    clear_screen()
     print_game_title()
     print(
         f"Congradulations! You have found the {room_keys[len(room_keys) - 1]} room!!!")
@@ -43,12 +58,14 @@ def game_completed():
     return answer == "n"
 
 
-def print_screen():
-    os.system('cls' if os.name == 'nt' else 'clear')
+def print_screen(room):
+    clear_screen()
     print_game_title()
     print_player_info(player)
     print()
     print(current_room)
+    print()
+    print_room_items(room)
     print()
     print_commands_title()
     print_command_quit()
@@ -66,16 +83,46 @@ def print_game_title():
 
 
 def print_player_items(player):
-    if not player.get_items():
-        print(f"{player} Items: None")
+    print(f"{player} Items:")
+    items = player.get_items()
+    if len(items) == 0:
+        print("\tNone")
     else:
-        print(f"{player} Items:")
-        print("\tPrint list of items here")
+        line = "\t"
+        for i in range(len(items)):
+            # split line if the chars goes over max_chars_per_line
+            if int(len(line)) + int(len(items[i].get_name())+9) > max_chars_per_line:
+                line.strip()
+                print(line)
+                line = "\t"
+            line += f"{i+1}. {items[i].get_name()}    "
+
+        if line != "\t":
+            print(line)
 
 
 def print_player_info(player):
     print(f"Character Name: {player}")
     print_player_items(player)
+
+
+def print_room_items(room):
+    print("Items at Location:")
+    items = room.get_items()
+    if len(items) == 0:
+        print("\tNone")
+    else:
+        line = "\t"
+        for i in range(len(items)):
+            # split line if the chars goes over max_chars_per_line
+            if int(len(line)) + int(len(items[i].get_name())+9) > max_chars_per_line:
+                line.strip()
+                print(line)
+                line = "\t"
+            line += f"{i+1}. {items[i].get_name()}    "
+
+        if line != "\t":
+            print(line)
 
 
 def print_commands_title():
@@ -115,21 +162,21 @@ def print_invalid_cmd(user_cmd):
 
 
 dict_rooms = {
-    room_keys[0]:  Room("Outside Cave Entrance", "North of you, the cave mount beckons"),
+    room_keys[0]:  Room("Outside Cave Entrance", "North of you, the cave mount beckons", [Item("hp-potion", "refills hp"), Item("wooden-sword", "This weapon couldn't kill an elpy"), Item("wooden-armor", "Better than nothing!")]),
 
     room_keys[1]:    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+passages run north and east.""", [Item("hp-potion", "refills hp"), Item("iron-sword", "Bring on the big stuff!"), Item("iron-armor", "protects against claws and cuts")]),
 
     room_keys[2]: Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+the distance, but there is no way across the chasm.""", [Item("LightSource", "May it shine light around you in dark times"), Item("gold-sword", "Careful! It's sharp"), Item("gold-armor", "Protects against claws, cuts, and the ladies love it")]),
 
     room_keys[3]:   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+to north. The smell of gold permeates the air.""", [Item("life", "revives upon death"), Item("master-sword", "Cuts through anything"), Item("master-armor", "Nearly invincible")]),
 
     room_keys[4]: Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+earlier adventurers. The only exit is to the south.""", [Item("gold", "time to retire"), Item("will", "All your items will be handed to next player upon death")]),
 }
 
 
@@ -174,7 +221,7 @@ dict_rooms[room_keys[4]].set_moves([possible_moves[move_south_index]])
 # If the user enters "q", quit the game.
 
 # game setup
-os.system('cls' if os.name == 'nt' else 'clear')
+clear_screen()
 print_game_title()
 player_name = input("Enter character name: ")
 player = Player(player_name)
@@ -183,7 +230,7 @@ current_room = dict_rooms[room_keys[0]]
 # play game
 while True:
     # Prints information on the screen for the user to review
-    print_screen()
+    print_screen(current_room)
     # user input = list[strings]...
     # --- replaces multiple whitespaces with one whitespace, and removes all leading/trailing whitespaces
     # --- sets all chars to lowercase
@@ -198,7 +245,6 @@ while True:
     # get item
     elif "get" in cmd[0] or "take" in cmd[0]:
         get_items_from_room(cmd[1:], current_room, player)
-        input("press any key to continue...")
     # invalid cmd
     else:
         print('cmd =', f"\"{cmd[0]}\"")
@@ -207,4 +253,4 @@ while True:
     if current_room.get_name() == dict_rooms[room_keys[len(room_keys) - 1]].get_name():
         if game_completed():
             break
-os.system('cls' if os.name == 'nt' else 'clear')
+clear_screen()

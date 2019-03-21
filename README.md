@@ -46,39 +46,41 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
   also be a `list` of items "in" the player, similar to how `Item`s can be in a
   `Room`.
 
-* Add a new type of sentence the parser can understand: two words.
+[X] Add a new type of sentence the parser can understand: two words.
+    Student Note: due to pythons `split` functionality, a parser was not needed for recognizing get commands... instead a simple if condition was fine.
 
-  * Until now, the parser could just understand one sentence form:
+  [X] Until now, the parser could just understand one sentence form:
 
      `verb`
 
     such as "n" or "q".
 
-  * But now we want to add the form:
+  [X] But now we want to add the form:
 
     `verb` `object`
 
     such as "take coins" or "drop sword".
 
-  * Split the entered command and see if it has 1 or 2 words in it to determine
+  [X] Split the entered command and see if it has 1 or 2 words in it to determine
     if it's the first or second form.
 
-* Implement support for the verb `get` followed by an `Item` name. This will be
+[X] Implement support for the verb `get` followed by an `Item` name. This will be
   used to pick up `Item`s.
 
-  * If the user enters `get` or `take` followed by an `Item` name, look at the
+  [X] If the user enters `get` or `take` followed by an `Item` name, look at the
     contents of the current `Room` to see if the item is there.
 
-     * If it is there, remove it from the `Room` contents, and add it to the
+   [X] If it is there, remove it from the `Room` contents, and add it to the
        `Player` contents.
 
-     * If it's not there, print an error message telling the user so.
+   [X] If it's not there, print an error message telling the user so.
 
-     * Add an `on_take` method to `Item`.
+[X] Add an `on_take` method to `Item`.
+    Student_note: I added the ability to take multiple items in 1 command, so I changed this method name to `get_items_from_room`
 
-        * Call this method when the `Item` is picked up by the player.
+  [X] Call this method when the `Item` is picked up by the player.
 
-        * The `Item` can use this to run additional code when it is picked up.
+  [X] The `Item` can use this to run additional code when it is picked up.
 
      * Add an `on_drop` method to `Item`. Implement it similar to `on_take`.
 
@@ -99,7 +101,7 @@ In arbitrary order:
 
 * Subclass items into treasures
 
-* Add a subclass to `Item` called `LightSource`.
+[X] Add a subclass to `Item` called `LightSource`.
 
   * During world creation, add a `lamp` `LightSource` to a convenient `Room`.
 
@@ -126,13 +128,13 @@ In arbitrary order:
   * Modify the `get`/`take` code to print "Good luck finding that in the dark!" if
   the user tries to pick up an `Item` in the dark.
 
-* Add methods to notify items when they are picked up or dropped
+[X] Add methods to notify items when they are picked up or dropped
 
 * Add light and darkness to the game
 
-* Add more items to the game.
+[X] Add more items to the game.
 
-* Add a way to win.
+[X] Add a way to win.
 
 * Add more to the parser.
 

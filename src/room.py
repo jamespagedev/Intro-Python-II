@@ -21,6 +21,25 @@ class Room:
     def get_moves(self):
         return self.list_moves
 
+    def get_items(self, user_itemnames=[]):
+        if len(user_itemnames) == 0:
+            return self.list_items_objects
+
+        room_items_removed = []
+        for user_itemname in user_itemnames:
+            for item in self.list_items_objects:
+                if item.get_name().lower() == user_itemname:
+                    room_items_removed.append(self.list_items_objects.pop(
+                        self.list_items_objects.index(item)))
+                    break
+        return room_items_removed
+
+    def is_item_in_room(self, itemname):
+        for item in self.list_items_objects:
+            if itemname == item.get_name().lower():
+                return True
+        return False
+
     def additem(self, items):
         self.list_items_objects.extend(items)
 

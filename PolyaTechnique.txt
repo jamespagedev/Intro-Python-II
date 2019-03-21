@@ -57,7 +57,8 @@
         * Allow player to move between rooms
         * build end game
     Thursday:
-        Build Item Objects
-        Add items to rooms upon room creation (random items added between 1-3)
+        * Build Item Objects
+        * Add items to rooms upon room creation
+        * Add command for player to pickup items from rooms and store items
         Add ability for player to carry items between rooms
-        Add ability for player to get/drop items in rooms
+        Add ability for player to drop items in rooms

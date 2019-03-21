@@ -60,5 +60,5 @@
         * Build Item Objects
         * Add items to rooms upon room creation
         * Add command for player to pickup items from rooms and store items
-        Add ability for player to carry items between rooms
-        Add ability for player to drop items in rooms
+        * Add ability for player to carry items between rooms
+        * Add ability for player to drop items in rooms

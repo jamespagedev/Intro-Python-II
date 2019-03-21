@@ -10,7 +10,7 @@ from item import Item
 # ******************************* globals *******************************
 # ***********************************************************************
 
-max_chars_per_line = 50
+max_chars_per_line = 80
 game_title = "Intro-Python-II"
 # order of possible_moves is coupled with logic in other file(s)
 possible_moves = ["n", "s", "e", "w"]
@@ -38,9 +38,26 @@ def get_items_from_room(player_selected_itemnames, room, player):
     player.add_items(room.get_items(player_selected_itemnames))
 
     # Finally, print the items (on player screen) removed from the room and stored with player
-    print(f"{player} stores items: {player.get_item_names()}")
+    print(f"{player} stores items: {player_selected_itemnames}")
     return input(f"(Press any key to continue...)")
 
+
+def drop_items_in_room(player_selected_itemnames, player, room):
+    clear_screen()
+    # First check if player has item(s)...
+    # if not, return a message saying item "itemName" not found in players inventory
+    for player_selected_itemname in player_selected_itemnames:
+        if player_selected_itemname not in player.get_item_names():
+            print(
+                f"Item not found in player inventory: {player_selected_itemname}")
+            return input(f"(Press any key to continue...)")
+
+    # Next remove the items(s) from player and add item(s) to room
+    room.add_items(player.drop_items(player_selected_itemnames))
+
+    # Finally, print the items (on player screen) that were dropped in the room
+    print(f"{player} dropped items: {player_selected_itemnames}")
+    return input(f"(press any key to continue...)")
 # ---------------------------- print methods ----------------------------
 
 
@@ -242,9 +259,12 @@ while True:
     # change room - valid move direction entered by user
     elif cmd[0] in current_room.get_moves():
         current_room = current_room.next_room(cmd[0], possible_moves)
-    # get item
+    # get item(s)
     elif "get" in cmd[0] or "take" in cmd[0]:
         get_items_from_room(cmd[1:], current_room, player)
+    # drop item(s)
+    elif "drop" in cmd[0]:
+        drop_items_in_room(cmd[1:], player, current_room)
     # invalid cmd
     else:
         print('cmd =', f"\"{cmd[0]}\"")

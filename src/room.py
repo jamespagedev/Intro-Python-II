@@ -40,8 +40,8 @@ class Room:
                 return True
         return False
 
-    def additem(self, items):
-        self.list_items_objects.extend(items)
+    def add_items(self, list_player_items):
+        self.list_items_objects.extend(list_player_items)
 
     def next_room(self, usr_cmd, possible_moves):
         if usr_cmd == possible_moves[0]:

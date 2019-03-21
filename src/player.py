@@ -22,3 +22,13 @@ class Player:
         for item in self.list_items_objects:
             item_names.append(item.get_name())
         return item_names
+
+    def drop_items(self, user_itemnames):
+        player_items_removed = []
+        for user_itemname in user_itemnames:
+            for item in self.list_items_objects:
+                if item.get_name().lower() == user_itemname:
+                    player_items_removed.append(self.list_items_objects.pop(
+                        self.list_items_objects.index(item)))
+                    break
+        return player_items_removed

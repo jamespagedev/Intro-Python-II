@@ -24,6 +24,15 @@ room_keys = ['outside', 'foyer', 'overlook', 'narrow', 'treasure']
 # ***********************************************************************
 
 
+def get_items_from_room(items, room, player):
+    # First check if item(s) are in the room...
+        # if not, return a message saying item "itemName" not found in current location
+
+    print("items =", items)
+
+# ---------------------------- print methods ----------------------------
+
+
 def game_completed():
     os.system('cls' if os.name == 'nt' else 'clear')
     print_game_title()
@@ -33,7 +42,18 @@ def game_completed():
     answer = input("Would you like to keep playing ([y]es, [n]o): ").lower()
     return answer == "n"
 
-# ---------------------------- print methods ----------------------------
+
+def print_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print_game_title()
+    print_player_info(player)
+    print()
+    print(current_room)
+    print()
+    print_commands_title()
+    print_command_quit()
+    print_commands_move(current_room.get_moves())
+    print()
 
 
 def print_game_title():
@@ -78,6 +98,16 @@ def print_commands_move(moves):
         elif move == possible_moves[move_west_index]:
             str_move_cmds += f"[{possible_moves[move_west_index]}] = move west    "
     print("\t" + str_move_cmds)
+
+
+def print_invalid_cmd(user_cmd):
+    # invalid move direction entered by user
+    if user_cmd in possible_moves:
+        input("There is no room in that direction (press any key to continue...)")
+    # input entered by user not recognized
+    else:
+        input("invalid command! (press any key to continue...)")
+
 
 # ***********************************************************************
 # ************************ Declare all the rooms ************************
@@ -152,30 +182,27 @@ current_room = dict_rooms[room_keys[0]]
 
 # play game
 while True:
-    os.system('cls' if os.name == 'nt' else 'clear')
-
-    print_game_title()
-    print_player_info(player)
-    print()
-    print(current_room)
-    print()
-    print_commands_title()
-    print_command_quit()
-    print_commands_move(current_room.get_moves())
-    print()
-    cmd = input("Enter command: ").lower()
+    # Prints information on the screen for the user to review
+    print_screen()
+    # user input = list[strings]...
+    # --- replaces multiple whitespaces with one whitespace, and removes all leading/trailing whitespaces
+    # --- sets all chars to lowercase
+    # --- splits the chars/words into a list of strings (per whitespace in between them)
+    cmd = ' '.join(input("Enter command: ").lower().split()).split(" ")
     # quits game
-    if cmd == "q":
+    if cmd[0] == "q":
         break
     # change room - valid move direction entered by user
-    elif cmd in current_room.get_moves():
-        current_room = current_room.next_room(cmd, possible_moves)
-    # invalid move direction entered by user
-    elif cmd in possible_moves:
-        input("There is no room in that direction (press any key to continue...)")
-    # input entered by user not recognized
+    elif cmd[0] in current_room.get_moves():
+        current_room = current_room.next_room(cmd[0], possible_moves)
+    # get item
+    elif "get" in cmd[0] or "take" in cmd[0]:
+        get_items_from_room(cmd[1:], current_room, player)
+        input("press any key to continue...")
+    # invalid cmd
     else:
-        input("invalid command! (press any key to continue...)")
+        print('cmd =', f"\"{cmd[0]}\"")
+        print_invalid_cmd(cmd[0])
     # user beats game if in the final room
     if current_room.get_name() == dict_rooms[room_keys[len(room_keys) - 1]].get_name():
         if game_completed():

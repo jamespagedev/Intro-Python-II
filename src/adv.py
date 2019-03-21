@@ -18,7 +18,8 @@ move_north_index = 0
 move_south_index = 1
 move_east_index = 2
 move_west_index = 3
-room_keys = ['outside', 'foyer', 'overlook', 'narrow', 'treasure']
+room_keys = ['outside', 'hidden', 'light',
+             'foyer', 'overlook', 'narrow', 'treasure']
 
 # ***********************************************************************
 # ******************************* methods *******************************
@@ -86,7 +87,11 @@ def print_screen(room):
     print()
     print_commands_title()
     print_command_quit()
+    print_command_inventory()
     print_commands_move(current_room.get_moves())
+    print_commands_get_items()
+    print_commands_take_items()
+    print_commands_drop_items()
     print()
 
 
@@ -157,6 +162,10 @@ def print_command_quit():
     print("\t[q] = quits game")
 
 
+def print_command_inventory():
+    print("\t[i] = displays inventory")
+
+
 def print_commands_move(moves):
     str_move_cmds = ""
     for move in moves:
@@ -169,6 +178,18 @@ def print_commands_move(moves):
         elif move == possible_moves[move_west_index]:
             str_move_cmds += f"[{possible_moves[move_west_index]}] = move west    "
     print("\t" + str_move_cmds)
+
+
+def print_commands_get_items():
+    print("\t[get item-name] = takes item(s) from room and adds to inventory. (example: [get sword potion shield])")
+
+
+def print_commands_take_items():
+    print("\t[take item-name] = same as [get item-name]")
+
+
+def print_commands_drop_items():
+    print("\t[drop item-name] = takes item(s) from inventory and leaves item(s) in current room. (example: [drop sword potion shield])")
 
 
 def print_invalid_cmd(user_cmd):
@@ -189,16 +210,20 @@ dict_rooms = {
     room_keys[0]:  Room("Outside Cave Entrance", "North of you, the cave mount beckons", [Item("hp-potion", "refills hp"), Item("wooden-sword", "This weapon couldn't kill an elpy"), Item("wooden-armor", "Better than nothing!")]),
 
     room_keys[1]:    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east.""", [Item("hp-potion", "refills hp"), Item("iron-sword", "Bring on the big stuff!"), Item("iron-armor", "protects against claws and cuts")]),
+passages run north and east. Something odd showing west""", [Item("hp-potion", "refills hp"), Item("iron-sword", "Bring on the big stuff!"), Item("iron-armor", "protects against claws and cuts")]),
 
-    room_keys[2]: Room("Grand Overlook", """A steep cliff appears before you, falling
+    room_keys[2]:    Room("Hidden Passage", """Shining light to the north.""", []),
+
+    room_keys[3]:    Room("Light Room", """WOW!!! It's bright in here!.""", [Item("LightSource", "May it shine light around you in dark times")]),
+
+    room_keys[4]: Room("Grand Overlook", """A steep cliff appears before you, falling
 into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm.""", [Item("LightSource", "May it shine light around you in dark times"), Item("gold-sword", "Careful! It's sharp"), Item("gold-armor", "Protects against claws, cuts, and the ladies love it")]),
+the distance, but there is no way across the chasm.""", [Item("hp-full", "Restores hp to max"), Item("gold-sword", "Careful! It's sharp"), Item("gold-armor", "Protects against claws, cuts, and the ladies love it")]),
 
-    room_keys[3]:   Room("Narrow Passage", """The narrow passage bends here from west
+    room_keys[5]:   Room("Narrow Passage", """The narrow passage bends here from west
 to north. The smell of gold permeates the air.""", [Item("life", "revives upon death"), Item("master-sword", "Cuts through anything"), Item("master-armor", "Nearly invincible")]),
 
-    room_keys[4]: Room("Treasure Chamber", """You've found the long-lost treasure
+    room_keys[6]: Room("Treasure Chamber", """You've found the long-lost treasure
 chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south.""", [Item("gold", "time to retire"), Item("will", "All your items will be handed to next player upon death")]),
 }
@@ -210,22 +235,31 @@ earlier adventurers. The only exit is to the south.""", [Item("gold", "time to r
 
 dict_rooms[room_keys[0]].n_to = dict_rooms[room_keys[1]]
 dict_rooms[room_keys[0]].set_moves([possible_moves[move_north_index]])
-dict_rooms[room_keys[1]].n_to = dict_rooms[room_keys[2]]
+dict_rooms[room_keys[1]].n_to = dict_rooms[room_keys[4]]
 dict_rooms[room_keys[1]].s_to = dict_rooms[room_keys[0]]
-dict_rooms[room_keys[1]].e_to = dict_rooms[room_keys[3]]
+dict_rooms[room_keys[1]].e_to = dict_rooms[room_keys[5]]
+dict_rooms[room_keys[1]].w_to = dict_rooms[room_keys[2]]
 dict_rooms[room_keys[1]].set_moves([possible_moves[move_north_index],
                                     possible_moves[move_south_index],
-                                    possible_moves[move_east_index]
-                                    ])
-dict_rooms[room_keys[2]].s_to = dict_rooms[room_keys[1]]
-dict_rooms[room_keys[2]].set_moves([possible_moves[move_south_index]])
-dict_rooms[room_keys[3]].n_to = dict_rooms[room_keys[4]]
-dict_rooms[room_keys[3]].w_to = dict_rooms[room_keys[1]]
-dict_rooms[room_keys[3]].set_moves([possible_moves[move_north_index],
+                                    possible_moves[move_east_index],
                                     possible_moves[move_west_index]
                                     ])
-dict_rooms[room_keys[4]].s_to = dict_rooms[room_keys[3]]
+dict_rooms[room_keys[2]].n_to = dict_rooms[room_keys[3]]
+dict_rooms[room_keys[2]].e_to = dict_rooms[room_keys[1]]
+dict_rooms[room_keys[2]].set_moves([possible_moves[move_north_index],
+                                    possible_moves[move_east_index]
+                                    ])
+dict_rooms[room_keys[3]].s_to = dict_rooms[room_keys[2]]
+dict_rooms[room_keys[3]].set_moves([possible_moves[move_south_index]])
+dict_rooms[room_keys[4]].s_to = dict_rooms[room_keys[1]]
 dict_rooms[room_keys[4]].set_moves([possible_moves[move_south_index]])
+dict_rooms[room_keys[5]].n_to = dict_rooms[room_keys[6]]
+dict_rooms[room_keys[5]].w_to = dict_rooms[room_keys[1]]
+dict_rooms[room_keys[5]].set_moves([possible_moves[move_north_index],
+                                    possible_moves[move_west_index]
+                                    ])
+dict_rooms[room_keys[6]].s_to = dict_rooms[room_keys[5]]
+dict_rooms[room_keys[6]].set_moves([possible_moves[move_south_index]])
 
 # ***********************************************************************
 # ********************************* main ********************************

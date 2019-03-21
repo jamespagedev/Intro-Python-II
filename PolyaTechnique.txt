@@ -63,5 +63,5 @@
         * Add ability for player to carry items between rooms
         * Add ability for player to drop items in rooms
         * add command i shows inventory
-        update commands
-        add a few rooms
+        * update display commands
+        * add a few rooms

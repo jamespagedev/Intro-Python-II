@@ -32,14 +32,14 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 
   [X] The item should have `name` and `description` attributes.
 
-    [X] Hint: the name should be one word for ease in parsing later.
+    * Hint: the name should be one word for ease in parsing later.
 
 [X] Add the ability to add items to rooms.
 
   [X] The `Room` class should be extended with a `list` that holds the `Item`s
     that are currently in that room.
 
-  * Add functionality to the main loop that prints out all the items that are
+  [X] Add functionality to the main loop that prints out all the items that are
     visible to the player when they are in that room.
 
 [X] Add capability to add `Item`s to the player's inventory. The inventory can
@@ -84,10 +84,10 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 
      * Add an `on_drop` method to `Item`. Implement it similar to `on_take`.
 
-* Implement support for the verb `drop` followed by an `Item` name. This is the
+[X] Implement support for the verb `drop` followed by an `Item` name. This is the
   opposite of `get`/`take`.
 
-* Add the `i` and `inventory` commands that both show a list of items currently
+[X] Add the `i` and `inventory` commands that both show a list of items currently
   carried by the player.
 
 
@@ -95,7 +95,7 @@ The `/src` directory contains the files `adv.py`, which is where the main logic 
 
 In arbitrary order:
 
-* Add more rooms
+[X] Add more rooms
 
 * Add scoring
 
